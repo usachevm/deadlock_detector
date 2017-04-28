@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 
+namespace UTOOLS
+{
+
 // use this instead of _beginthreadex(...) to provide deadlock detection functionality
 uintptr_t __cdecl _beginthreadex_dd(_In_opt_ void * _Security, _In_ unsigned _StackSize,
      _In_ unsigned (__stdcall * _StartAddress) (void *), _In_opt_ void * _ArgList, 
@@ -58,4 +61,6 @@ class DEADLOCK_DETECTOR
       };      
       std::vector<THREADCONTEXT> tctx;
 };
+
+}  // end-of-namespace
 

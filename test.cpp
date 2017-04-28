@@ -7,7 +7,7 @@
 #include <process.h>
 #include "deadlock_detector.hpp"
 
-int start = 0;
+int fire_collision = 0;
 HANDLE hev = 0;
 
 void f2(const char* prefix) 
@@ -23,7 +23,7 @@ void f1(const char* prefix)
 void f0(const char* prefix) 
 {
    printf("%s::f0\n", prefix); f1(prefix);
-   if (start)
+   if (fire_collision)
       WaitForSingleObject(hev, INFINITE);
 }
 
@@ -50,16 +50,16 @@ int _tmain(int argc, _TCHAR* argv[])
    hev = CreateEvent(0, 1, 0, 0);
    
    unsigned int thread_id;
-   _beginthreadex_dd(NULL, 0, thread0, NULL, 0, &thread_id, "Thread0");
-   _beginthreadex_dd(NULL, 0, thread1, NULL, 0, &thread_id, "Thread1");
+   UTOOLS::_beginthreadex_dd(NULL, 0, thread0, NULL, 0, &thread_id, "Thread0");
+   UTOOLS::_beginthreadex_dd(NULL, 0, thread1, NULL, 0, &thread_id, "Thread1");
 
-   DEADLOCK_DETECTOR* fw = DEADLOCK_DETECTOR::instance();
-   fw->run();
+   UTOOLS::DEADLOCK_DETECTOR* dd = UTOOLS::DEADLOCK_DETECTOR::instance();
+   dd->run();
 
    Sleep(3000);
-   start = 1;
+   fire_collision = 1;
 
-   fw->wait_me();
+   dd->wait_me();
 
 	return 0;
 }

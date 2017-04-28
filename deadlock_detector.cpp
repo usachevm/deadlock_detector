@@ -3,6 +3,8 @@
 
 #pragma comment(lib, "dbghelp.lib")
 
+using namespace UTOOLS;
+
 DEADLOCK_DETECTOR* DEADLOCK_DETECTOR::singleton = NULL;
 
 #define HASH_ROT13_CHAR(hash, ch)                     \
@@ -250,7 +252,7 @@ void DEADLOCK_DETECTOR::dump()
 }
 
 
-uintptr_t __cdecl _beginthreadex_dd(_In_opt_ void * _Security, _In_ unsigned _StackSize, _In_ unsigned (__stdcall * _StartAddress) (void *), _In_opt_ void * _ArgList, _In_ unsigned _InitFlag, _In_opt_ unsigned * _ThrdAddr, const char* thread_name)
+uintptr_t __cdecl UTOOLS::_beginthreadex_dd(_In_opt_ void * _Security, _In_ unsigned _StackSize, _In_ unsigned (__stdcall * _StartAddress) (void *), _In_opt_ void * _ArgList, _In_ unsigned _InitFlag, _In_opt_ unsigned * _ThrdAddr, const char* thread_name)
 {
    uintptr_t hthread = _beginthreadex(_Security, _StackSize, _StartAddress, _ArgList, _InitFlag, _ThrdAddr);
    DEADLOCK_DETECTOR::instance()->__add_thread((HANDLE) hthread, thread_name);
